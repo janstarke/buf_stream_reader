@@ -1,0 +1,10 @@
+[package]
+name = "buf_stream_reader"
+version = "0.1.0"
+authors = ["Jan Starke <Jan.Starke@t-systems.com>"]
+edition = "2018"
+description = "provides a buffered access to a Read object with a limited Seek implementation. "
+homepage = "https://www.github.com/janstarke/buf_stream_reader"
+license-file = "LICENSE"
+
+[dependencies]
