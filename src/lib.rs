@@ -17,7 +17,7 @@
 //! # let mut arr: [u8; 256] = [0; 256];  
 //! # for (elem, val) in arr.iter_mut().zip(0..=255) { *elem = val; }
 //! let cursor = Cursor::new(&arr); // points to array with values from \x00 .. \xff
-//! let mut reader = BufStreamReader::new(cursor, 16).unwrap();
+//! let mut reader = BufStreamReader::new(cursor, 16);
 //! 
 //! let mut buffer: [u8; 7] = [0; 7];
 //! 
@@ -38,7 +38,7 @@
 //! # let mut arr: [u8; 256] = [0; 256];  
 //! # for (elem, val) in arr.iter_mut().zip(0..=255) { *elem = val; }
 //! let cursor = Cursor::new(&arr); // points to array with values from \x00 .. \xff
-//! let mut reader = BufStreamReader::new(cursor, 16).unwrap();
+//! let mut reader = BufStreamReader::new(cursor, 16);
 //! 
 //! let mut buffer: [u8; 7] = [0; 7];
 //! assert!(reader.seek(SeekFrom::Start(96)).is_ok());
@@ -53,7 +53,7 @@
 //! # let mut arr: [u8; 256] = [0; 256];  
 //! # for (elem, val) in arr.iter_mut().zip(0..=255) { *elem = val; }
 //! let cursor = Cursor::new(&arr); // points to array with values from \x00 .. \xff
-//! let mut reader = BufStreamReader::new(cursor, 16).unwrap();
+//! let mut reader = BufStreamReader::new(cursor, 16);
 //! 
 //! let mut buffer: [u8; 7] = [0; 7];
 //! assert!(reader.seek(SeekFrom::Start(10)).is_ok());

@@ -17,7 +17,7 @@ Seeking is limited by the following constraints:
 use std::io::{Cursor, Read, Seek, SeekFrom};
 use buf_stream_reader::BufStreamReader;
 let cursor = Cursor::new(&arr); // points to array with values from \x00 .. \xff
-let mut reader = BufStreamReader::new(cursor, 16).unwrap();
+let mut reader = BufStreamReader::new(cursor, 16);
 
 let mut buffer: [u8; 7] = [0; 7];
 
@@ -34,7 +34,7 @@ assert_eq!(&buffer, &arr[3..10]);
 ## Seeking backwards is not possible if the destination is not within of behind the current buffer
 ```rust
 let cursor = Cursor::new(&arr); // points to array with values from \x00 .. \xff
-let mut reader = BufStreamReader::new(cursor, 16).unwrap();
+let mut reader = BufStreamReader::new(cursor, 16);
 
 let mut buffer: [u8; 7] = [0; 7];
 assert!(reader.seek(SeekFrom::Start(96)).is_ok());
@@ -45,7 +45,7 @@ assert!(reader.seek(SeekFrom::Current(-1)).is_err());
 ## Seeking forward is not limited, as well as reading beyond buffer limits (as far as data is available, of course)
 ```rust
 let cursor = Cursor::new(&arr); // points to array with values from \x00 .. \xff
-let mut reader = BufStreamReader::new(cursor, 16).unwrap();
+let mut reader = BufStreamReader::new(cursor, 16);
 
 let mut buffer: [u8; 7] = [0; 7];
 assert!(reader.seek(SeekFrom::Start(10)).is_ok());
