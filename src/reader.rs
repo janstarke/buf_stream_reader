@@ -147,3 +147,61 @@ impl<R> Seek for BufStreamReader<R> where R: Read {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::{Cursor, Read, Seek, SeekFrom};
+
+    /// test if all bytes are read, with a nice buffer size
+    #[test]
+    fn test_completeness_1() {
+        let mut arr: [u8; 256] = [0; 256];  
+        for (elem, val) in arr.iter_mut().zip(0..=255) { *elem = val; }
+        let cursor = Cursor::new(&arr); // points to array with values from \x00 .. \xff
+        let mut reader = BufStreamReader::new(cursor, 16);
+        
+        let mut buffer: [u8; 256] = [0; 256];
+        reader.read(&mut buffer).unwrap();
+        assert_eq!(&arr, &buffer);
+        
+        let mut buffer: [u8; 1] = [0; 1];
+        assert!(reader.read(&mut buffer).is_err());
+    }
+
+    /// test if all bytes are read, with a bad buffer size
+    #[test]
+    fn test_completeness_2() {
+        let mut arr: [u8; 256] = [0; 256];  
+        for (elem, val) in arr.iter_mut().zip(0..=255) { *elem = val; }
+        let cursor = Cursor::new(&arr); // points to array with values from \x00 .. \xff
+        let mut reader = BufStreamReader::new(cursor, 13);
+        
+        let mut buffer: [u8; 256] = [0; 256];
+        reader.read(&mut buffer).unwrap();
+        assert_eq!(&arr, &buffer);
+
+        let mut buffer: [u8; 1] = [0; 1];
+        assert!(reader.read(&mut buffer).is_err());
+    }
+
+    /// test if all bytes are read, with a bad buffer size and seeking
+    #[test]
+    fn test_completeness_3() {
+        let mut arr: [u8; 256] = [0; 256];  
+        for (elem, val) in arr.iter_mut().zip(0..=255) { *elem = val; }
+        let cursor = Cursor::new(&arr); // points to array with values from \x00 .. \xff
+        let mut reader = BufStreamReader::new(cursor, 13);
+        
+        let mut buffer: [u8; 256] = [0; 256];
+        reader.read(&mut buffer[0..100]).unwrap();
+        assert_eq!(&arr[0..100], &buffer[0..100]);
+
+        reader.seek(SeekFrom::Current(100)).unwrap();
+        reader.read(&mut buffer[100..]).unwrap();
+        assert_eq!(&arr[200..], &buffer[100..156]);
+
+        let mut buffer: [u8; 1] = [0; 1];
+        assert!(reader.read(&mut buffer).is_err());
+    }
+}
