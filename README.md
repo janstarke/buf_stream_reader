@@ -1,7 +1,10 @@
 # buf_stream_reader
 
 This struct provides a buffered access to a [`Read`](std::io::Read) object
-with a limited [`Seek`](std::io::Seek) implementation.
+with a limited [`Seek`](std::io::Seek) implementation. In other words, [`BufStreamReader`] turns a
+[`Read`](std::io::Read) into a [`Read`](std::io::Read)+[`Seek`](std::io::Seek), which can be used
+together with binary parsers such as [`binread`](https://crates.io/crates/binread)
+(which is the reason why I created this crate).
 
 Seeking is limited by the following constraints:
 
